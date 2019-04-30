@@ -212,16 +212,13 @@ export class Git {
     auth: IGitAuth = undefined
   ): Promise<IGitPushPullResult> {
     try {
+      let obj: IGitPushPull = {
+        current_path: path
+      };
       if (auth) {
-        let obj: IGitPushPull = {
-          current_path: path,
-          auth: auth
-        };
-      } else {
-        let obj: IGitPushPull = {
-          current_path: path
-        };
+        obj.auth = auth;
       }
+
       let response = await httpGitRequest('/git/pull', 'POST', obj);
       if (response.status !== 200) {
         const data = await response.json();
@@ -239,16 +236,14 @@ export class Git {
     auth: IGitAuth = undefined
   ): Promise<IGitPushPullResult> {
     try {
+      let obj: IGitPushPull = {
+        current_path: path
+      };
+
       if (auth) {
-        let obj: IGitPushPull = {
-          current_path: path,
-          auth: auth
-        };
-      } else {
-        let obj: IGitPushPull = {
-          current_path: path
-        };
+        obj.auth = auth;
       }
+
       let response = await httpGitRequest('/git/push', 'POST', obj);
       if (response.status !== 200) {
         const data = await response.json();
@@ -267,18 +262,15 @@ export class Git {
     auth: IGitAuth = undefined
   ): Promise<IGitCloneResult> {
     try {
+      let obj: IGitClone = {
+        current_path: path,
+        clone_url: url
+      };
+
       if (auth) {
-        let obj: IGitClone = {
-          current_path: path,
-          clone_url: url,
-          auth: auth
-        };
-      } else {
-        let obj: IGitClone = {
-          current_path: path,
-          clone_url: url
-        };
+        obj.auth = auth;
       }
+
       let response = await httpGitRequest('/git/clone', 'POST', obj);
       if (response.status !== 200) {
         const data = await response.json();
@@ -482,19 +474,16 @@ export class Git {
     authorEmail: string = ''
   ): Promise<IGitCommitResult> {
     try {
-      if (authorName === '' && authorEmail === '') {
-        let obj: IGitCommit = {
-          commit_msg: message,
-          top_repo_path: path
-        };
-      } else {
-        let obj: IGitCommit = {
-          commit_msg: message,
-          top_repo_path: path,
-          author_name: authorName,
-          author_email: authorEmail
-        };
+      let obj: IGitCommit = {
+        commit_msg: message,
+        top_repo_path: path
+      };
+
+      if (authorName !== '' && authorEmail !== '') {
+        obj.author_name = authorName;
+        obj.author_email = authorEmail;
       }
+
       let response = await httpGitRequest('/git/commit', 'POST', obj);
       if (response.status !== 200) {
         return response.json().then((data: any) => {
