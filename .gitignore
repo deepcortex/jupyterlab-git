@@ -107,3 +107,5 @@ node_modules/
 package-lock.json
 MANIFEST
 jupyterlab_git/labextension/*.tgz
+
+.DS_Store
