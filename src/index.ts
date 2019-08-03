@@ -28,6 +28,7 @@ import '../style/diff.css';
 import '../style/diff.css';
 import { GitClone } from './widgets/gitClone';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { IThemeManager } from '@jupyterlab/apputils';
 
 export const EXTENSION_ID = 'jupyter.extensions.git_plugin';
 
@@ -68,7 +69,8 @@ export class GitExtension implements IGitExtension {
     app: JupyterFrontEnd,
     restorer: ILayoutRestorer,
     factory: IFileBrowserFactory,
-    renderMime: IRenderMimeRegistry
+    renderMime: IRenderMimeRegistry,
+    themeManager: IThemeManager
   ) {
     this.app = app;
     this.gitPlugin = new GitWidget(
@@ -120,10 +122,17 @@ function activate(
   mainMenu: IMainMenu,
   restorer: ILayoutRestorer,
   factory: IFileBrowserFactory,
-  renderMime: IRenderMimeRegistry
+  renderMime: IRenderMimeRegistry,
+  themeManager: IThemeManager
 ): IGitExtension {
   const { commands } = app;
-  let gitExtension = new GitExtension(app, restorer, factory, renderMime);
+  let gitExtension = new GitExtension(
+    app,
+    restorer,
+    factory,
+    renderMime,
+    themeManager
+  );
 
   const category = 'Git';
   // Rank has been chosen somewhat arbitrarily to give priority to the running

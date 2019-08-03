@@ -78,7 +78,11 @@ export class GitWidget extends Widget {
     });
     this.addClass(gitWidgetStyle);
     const element = (
-      <GitPanel app={app} diff={diffFunction} renderMime={renderMime} />
+      <GitPanel
+        app={app}
+        diff={diffFunction}
+        renderMime={renderMime}
+      />
     );
     this.component = ReactDOM.render(element, this.node);
     this.component.refresh();
