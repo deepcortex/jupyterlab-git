@@ -190,17 +190,12 @@ export class Git {
   constructor() {}
 
   /** Make request for the Git Pull API. */
-  async pull(
-    path: string,
-    auth: IGitAuth = undefined
-  ): Promise<IGitPushPullResult> {
+  async pull(path: string, auth?: IGitAuth): Promise<IGitPushPullResult> {
     try {
       let obj: IGitPushPull = {
-        current_path: path
+        current_path: path,
+        auth
       };
-      if (auth) {
-        obj.auth = auth;
-      }
 
       let response = await httpGitRequest('/git/pull', 'POST', obj);
       if (response.status !== 200) {
@@ -214,18 +209,12 @@ export class Git {
   }
 
   /** Make request for the Git Push API. */
-  async push(
-    path: string,
-    auth: IGitAuth = undefined
-  ): Promise<IGitPushPullResult> {
+  async push(path: string, auth?: IGitAuth): Promise<IGitPushPullResult> {
     try {
       let obj: IGitPushPull = {
-        current_path: path
+        current_path: path,
+        auth
       };
-
-      if (auth) {
-        obj.auth = auth;
-      }
 
       let response = await httpGitRequest('/git/push', 'POST', obj);
       if (response.status !== 200) {
@@ -242,17 +231,14 @@ export class Git {
   async clone(
     path: string,
     url: string,
-    auth: IGitAuth = undefined
+    auth?: IGitAuth
   ): Promise<IGitCloneResult> {
     try {
       let obj: IGitClone = {
         current_path: path,
-        clone_url: url
+        clone_url: url,
+        auth
       };
-
-      if (auth) {
-        obj.auth = auth;
-      }
 
       let response = await httpGitRequest('/git/clone', 'POST', obj);
       if (response.status !== 200) {
