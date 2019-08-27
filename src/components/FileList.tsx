@@ -132,7 +132,6 @@ export class FileList extends React.Component<IFileListProps, IFileListState> {
         execute: async () => {
           await openDiffView(
             this.state.contextMenuFile,
-            this.props.topRepoPath,
             this.props.app,
             {
               currentRef: { specialRef: 'WORKING' },
@@ -152,7 +151,6 @@ export class FileList extends React.Component<IFileListProps, IFileListState> {
         execute: async () => {
           await openDiffView(
             this.state.contextMenuFile,
-            this.props.topRepoPath,
             this.props.app,
             {
               currentRef: { specialRef: 'INDEX' },
@@ -535,7 +533,6 @@ export class FileList extends React.Component<IFileListProps, IFileListState> {
               isDisabled={this.state.disableStaged}
               sideBarExpanded={this.props.sideBarExpanded}
               renderMime={this.props.renderMime}
-              themeManager={this.props.themeManager}
             />
             <GitStage
               heading={'Changed'}
@@ -570,7 +567,6 @@ export class FileList extends React.Component<IFileListProps, IFileListState> {
               isDisabled={this.state.disableUnstaged}
               sideBarExpanded={this.props.sideBarExpanded}
               renderMime={this.props.renderMime}
-              themeManager={this.props.themeManager}
             />
             <GitStage
               heading={'Untracked'}
@@ -605,7 +601,6 @@ export class FileList extends React.Component<IFileListProps, IFileListState> {
               isDisabled={this.state.disableUntracked}
               sideBarExpanded={this.props.sideBarExpanded}
               renderMime={this.props.renderMime}
-              themeManager={this.props.themeManager}
             />
           </div>
         )}

@@ -59,8 +59,7 @@ describe('PastCommitNode', () => {
       pre_commit: 'pre_commit'
     },
     branches: branches,
-    renderMime: null,
-    themeManager: null
+    renderMime: null
   };
   test('Includes commit info', () => {
     const pastCommitNode = shallow(<PastCommitNode {...props} />);

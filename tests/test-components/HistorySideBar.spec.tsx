@@ -25,8 +25,7 @@ describe('HistorySideBar', () => {
     app: null,
     refresh: null,
     diff: null,
-    renderMime: null,
-    themeManager: null
+    renderMime: null
   };
   test('renders commit nodes when expanded', () => {
     const historySideBar = shallow(<HistorySideBar {...props} />);

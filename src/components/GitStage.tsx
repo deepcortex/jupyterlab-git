@@ -20,7 +20,7 @@ import { classes } from 'typestyle';
 
 import * as React from 'react';
 
-import { showDialog, Dialog, IThemeManager } from '@jupyterlab/apputils';
+import { showDialog, Dialog } from '@jupyterlab/apputils';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 export interface IGitStageProps {
@@ -56,7 +56,6 @@ export interface IGitStageProps {
   disableOthers: Function;
   sideBarExpanded: boolean;
   renderMime: IRenderMimeRegistry;
-  themeManager: IThemeManager;
 }
 
 export interface IGitStageState {

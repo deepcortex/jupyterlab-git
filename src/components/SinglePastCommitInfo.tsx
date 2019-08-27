@@ -220,7 +220,6 @@ export class SinglePastCommitInfo extends React.Component<
                       onClick={async () => {
                         await openDiffView(
                           modifiedFile.modified_file_path,
-                          this.props.topRepoPath,
                           this.props.app,
                           {
                             previousRef: { gitRef: this.props.data.pre_commit },
