@@ -1,3 +1,5 @@
+@import url('~codemirror/addon/merge/merge.css');
+
 .jp-git-Notebook-diff .CodeMirror-gutter.CodeMirror-linenumbers[style] {
     width: 29px !important;
 }

@@ -2,11 +2,7 @@ import * as React from 'react';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
 import { getRefValue, IDiffContext } from './model';
-import {
-  Diff,
-  isDiffSupported,
-  RenderMimeProvider
-} from './Diff';
+import { Diff, isDiffSupported, RenderMimeProvider } from './Diff';
 import { JupyterFrontEnd } from '@jupyterlab/application';
 import { ReactWidget, showDialog } from '@jupyterlab/apputils';
 import { PathExt } from '@jupyterlab/coreutils';
@@ -48,7 +44,11 @@ export async function openDiffView(
       );
       const nbDiffWidget = ReactWidget.create(
         <RenderMimeProvider value={renderMime}>
-          <Diff path={relativeFilePath} diffContext={diffContext} />
+          <Diff
+            path={relativeFilePath}
+            diffContext={diffContext}
+            topRepoPath={topRepoPath}
+          />
         </RenderMimeProvider>
       );
       nbDiffWidget.id = id;

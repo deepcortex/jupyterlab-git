@@ -328,7 +328,6 @@ export class FileItem extends React.Component<IFileItemProps, {}> {
         onClick={async () => {
           await openDiffView(
             this.props.file.to,
-            this.props.topRepoPath,
             this.props.app,
             {
               previousRef: { gitRef: 'HEAD' },
