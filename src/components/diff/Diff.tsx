@@ -24,9 +24,21 @@ export function isDiffSupported(path: string): boolean {
   );
 }
 
+/** Diff component properties */
 export interface IDiffProps {
+  /**
+   * Path of the file to diff.
+   * It is relative to the git repository root folder
+   */
   path: string;
+  /**
+   * Git respository folder path.
+   * It is relative to the server root.
+   */
   topRepoPath: string;
+  /**
+   * References to show the diff for.
+   */
   diffContext: IDiffContext;
 }
 
