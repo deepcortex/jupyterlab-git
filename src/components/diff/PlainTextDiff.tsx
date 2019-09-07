@@ -1,6 +1,7 @@
 import { ServerConnection } from '@jupyterlab/services';
 import { Mode } from '@jupyterlab/codemirror';
 import * as React from 'react';
+
 import { httpGitRequest } from '../../git';
 import { IDiffProps } from './Diff';
 import { getRefValue, IDiffContext } from './model';
@@ -48,13 +49,15 @@ export class PlainTextDiff extends React.Component<
       );
     } else {
       return (
-        <div style={{ height: '100%', width: '100%' }}>
-          <div
-            id={`diffviewer-${this.props.path}-${getRefValue(
-              this.props.diffContext.currentRef
-            )}`}
-            style={{ height: '100%', width: '100%' }}
-          />
+        <div className="jp-git-diff-Widget">
+          <div className="jp-git-diff-root">
+            <div
+              id={`diffviewer-${this.props.path}-${getRefValue(
+                this.props.diffContext.currentRef
+              )}`}
+              className="jp-git-PlainText-diff"
+            />
+          </div>
         </div>
       );
     }
@@ -122,16 +125,17 @@ export class PlainTextDiff extends React.Component<
     const mode = Mode.findByFileName(this.props.path);
 
     mergeView(
+      // CodeMirror.MergeView(
       document.getElementById(
         `diffviewer-${this.props.path}-${getRefValue(
           this.props.diffContext.currentRef
         )}`
       ),
       {
-        value: prevContent,
-        orig: currContent,
+        value: currContent,
+        orig: prevContent,
         lineNumbers: true,
-        mode,
+        mode: mode.mime,
         connect: 'align',
         collapseIdentical: true,
         revertButtons: false

@@ -2,7 +2,10 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
+/* tslint:disable:triple-equals */
+
 import CodeMirror from 'codemirror';
+
 import {
   diff_match_patch,
   DIFF_EQUAL,
@@ -139,7 +142,7 @@ class DiffView implements MergeView.IDiffView {
     this.mv = mv;
     this.type = type;
     this.classes =
-      type === 'left'
+      type == 'left'
         ? {
             chunk: 'CodeMirror-merge-l-chunk',
             start: 'CodeMirror-merge-l-chunk-start',
@@ -170,7 +173,7 @@ class DiffView implements MergeView.IDiffView {
       value: orig,
       readOnly: !this.mv.options.allowEditingOriginals
     });
-    if (this.mv.options.connect === 'align') {
+    if (this.mv.options.connect == 'align') {
       if (!this.edit.state.trackAlignable) {
         this.edit.state.trackAlignable = new TrackAlignable(this.edit);
       }
@@ -182,7 +185,7 @@ class DiffView implements MergeView.IDiffView {
     this.orig.state.diffViews = [this];
     // @ts-ignore
     let classLocation = options.chunkClassLocation || 'background';
-    if (Object.prototype.toString.call(classLocation) !== '[object Array]') {
+    if (Object.prototype.toString.call(classLocation) != '[object Array]') {
       classLocation = [classLocation];
     }
     this.classes.classLocation = classLocation;
@@ -207,7 +210,7 @@ class DiffView implements MergeView.IDiffView {
 
   setShowDifferences(val: boolean): void {
     val = val !== false;
-    if (val !== this.showDifferences) {
+    if (val != this.showDifferences) {
       this.showDifferences = val;
       this.forceUpdate('full');
     }
@@ -215,7 +218,7 @@ class DiffView implements MergeView.IDiffView {
 
   static setScrollLock(dv: DiffView, val, action?) {
     dv.lockScroll = val;
-    if (val && action !== false) {
+    if (val && action != false) {
       if (DiffView.syncScroll(dv, true)) {
         makeConnections(dv);
       }
@@ -236,7 +239,7 @@ class DiffView implements MergeView.IDiffView {
     function update(mode?: string) {
       DiffView.updating = true;
       updatingFast = false;
-      if (mode === 'full') {
+      if (mode == 'full') {
         // @ts-ignore
         if (dv.svg) {
           clear(dv.svg);
@@ -255,11 +258,11 @@ class DiffView implements MergeView.IDiffView {
         updateMarks(dv.orig, dv.diff, orig, DIFF_DELETE, dv.classes);
       }
 
-      if (dv.mv.options.connect === 'align') {
+      if (dv.mv.options.connect == 'align') {
         alignChunks(dv);
       }
       makeConnections(dv);
-      if (dv.needsScrollSync !== null) {
+      if (dv.needsScrollSync != null) {
         DiffView.syncScroll(dv, dv.needsScrollSync);
       }
 
@@ -291,7 +294,7 @@ class DiffView implements MergeView.IDiffView {
         edit.from = edit.to = orig.from = orig.to = 0;
       }
       // Update faster when a line was added/removed
-      setDealign(change.text.length - 1 !== change.to.line - change.from.line);
+      setDealign(change.text.length - 1 != change.to.line - change.from.line);
     }
     function swapDoc(): void {
       dv.diffOutOfDate = true;
@@ -337,7 +340,7 @@ class DiffView implements MergeView.IDiffView {
   private static syncScroll(dv: DiffView, toOrig: boolean) {
     // Change handler will do a refresh after a timeout when diff is out of date
     if (dv.diffOutOfDate) {
-      if (dv.lockScroll && dv.needsScrollSync === null) {
+      if (dv.lockScroll && dv.needsScrollSync == null) {
         dv.needsScrollSync = toOrig;
       }
       return false;
@@ -359,7 +362,7 @@ class DiffView implements MergeView.IDiffView {
     // Don't take action if the position of this editor was recently set
     // (to prevent feedback loops)
     if (
-      editor.state.scrollSetBy === dv &&
+      editor.state.scrollSetBy == dv &&
       (editor.state.scrollSetAt || 0) + 250 > now
     ) {
       return false;
@@ -367,7 +370,7 @@ class DiffView implements MergeView.IDiffView {
 
     let sInfo = editor.getScrollInfo();
     let targetPos: number = 0;
-    if (dv.mv.options.connect === 'align') {
+    if (dv.mv.options.connect == 'align') {
       targetPos = sInfo.top;
     } else {
       let halfScreen = 0.5 * sInfo.clientHeight;
@@ -419,7 +422,7 @@ class DiffView implements MergeView.IDiffView {
 
   private static getOffsets(editor, around) {
     let bot = around.after;
-    if (bot === null) {
+    if (bot == null) {
       bot = editor.lastLine() + 1;
     }
     return {
@@ -439,7 +442,7 @@ class DiffView implements MergeView.IDiffView {
   gap: HTMLDivElement;
   lockScroll;
   diff;
-  chunks;
+  chunks: MergeView.Chunk[];
   dealigned: boolean;
   diffOutOfDate: boolean;
   needsScrollSync: boolean;
@@ -495,7 +498,7 @@ function updateMarks(editor: CodeMirror.Editor, diff, state, type, classes) {
   let vp = editor.getViewport();
   editor.operation(function() {
     if (
-      state.from === state.to ||
+      state.from == state.to ||
       vp.from - state.to > 20 ||
       state.from - vp.to > 20
     ) {
@@ -562,17 +565,15 @@ function markChanges(
   let top = Pos(from, 0);
   // @ts-ignore
   let bot = editor.clipPos(Pos(to - 1));
-  let cls = type === DIFF_DELETE ? classes.del : classes.insert;
+  let cls = type == DIFF_DELETE ? classes.del : classes.insert;
   function markChunk(start, end) {
     let bfrom = Math.max(from, start);
     let bto = Math.min(to, end);
     for (let i = bfrom; i < bto; ++i) {
-      marks.push(
-        addClass(editor, i, classes, true, i === start, i === end - 1)
-      );
+      marks.push(addClass(editor, i, classes, true, i == start, i == end - 1));
     }
     // When the chunk is empty, make sure a horizontal line shows up
-    if (start === end && bfrom === end && bto === end) {
+    if (start == end && bfrom == end && bto == end) {
       if (bfrom) {
         marks.push(addClass(editor, bfrom - 1, classes, false, false, true));
       } else {
@@ -587,7 +588,7 @@ function markChanges(
     let part = diff[i];
     let tp = part[0];
     let str = part[1];
-    if (tp === DIFF_EQUAL) {
+    if (tp == DIFF_EQUAL) {
       let cleanFrom = pos.line + (startOfLineClean(diff, i) ? 0 : 1);
       moveOver(pos, str);
       let cleanTo = pos.line + (endOfLineClean(diff, i) ? 1 : 0);
@@ -600,7 +601,7 @@ function markChanges(
       }
     } else {
       pending = true;
-      if (tp === type) {
+      if (tp == type) {
         let end = moveOver(pos, str, true);
         let a = posMax(top, pos);
         let b = posMin(bot, end);
@@ -716,12 +717,12 @@ function mergeAlignable(result, origAlignable, chunks, setIndex) {
   outer: for (; ; rI++) {
     let nextR = result[rI];
     let nextO = origAlignable[origI];
-    if (!nextR && nextO === null) {
+    if (!nextR && nextO == null) {
       break;
     }
 
     let rLine = nextR ? nextR[0] : 1e9;
-    let oLine = nextO === null ? 1e9 : nextO;
+    let oLine = nextO == null ? 1e9 : nextO;
     while (chunkI < chunks.length) {
       let chunk = chunks[chunkI];
       if (chunk.origFrom <= oLine && chunk.origTo > oLine) {
@@ -738,7 +739,7 @@ function mergeAlignable(result, origAlignable, chunks, setIndex) {
       diff += chunk.origTo - chunk.origFrom - (chunk.editTo - chunk.editFrom);
       chunkI++;
     }
-    if (rLine === oLine - diff) {
+    if (rLine == oLine - diff) {
       nextR[setIndex] = oLine;
       origI++;
     } else if (rLine < oLine - diff) {
@@ -752,7 +753,7 @@ function mergeAlignable(result, origAlignable, chunks, setIndex) {
   }
 }
 
-function findAlignedLines(dv, other) {
+function findAlignedLines(dv: DiffView, other: DiffView) {
   let alignable = alignableFor(dv.edit, dv.chunks, false);
   let result = [];
   if (other) {
@@ -761,7 +762,7 @@ function findAlignedLines(dv, other) {
       while (j < alignable.length && alignable[j] < n) {
         j++;
       }
-      if (j === alignable.length || alignable[j] !== n) {
+      if (j == alignable.length || alignable[j] != n) {
         alignable.splice(j++, 0, n);
       }
     }
@@ -783,10 +784,11 @@ function findAlignedLines(dv, other) {
   return result;
 }
 
-function alignChunks(dv, force?) {
+function alignChunks(dv: DiffView, force?: boolean) {
   if (!dv.dealigned && !force) {
     return;
   }
+  // @ts-ignore
   if (!dv.orig.curOp) {
     return dv.orig.operation(function() {
       alignChunks(dv, force);
@@ -794,7 +796,7 @@ function alignChunks(dv, force?) {
   }
 
   dv.dealigned = false;
-  let other = dv.mv.left === dv ? dv.mv.right : dv.mv.left;
+  const other = dv.mv.left == dv ? dv.mv.right : dv.mv.left;
   if (other) {
     ensureDiff(other);
     other.dealigned = false;
@@ -826,18 +828,18 @@ function alignChunks(dv, force?) {
   }
 }
 
-function alignLines(cm, lines, aligners) {
+function alignLines(cm: CodeMirror.Editor[], lines, aligners) {
   let maxOffset = 0;
   let offset = [];
   for (let i = 0; i < cm.length; i++) {
-    if (lines[i] !== null) {
+    if (lines[i] != null) {
       let off = cm[i].heightAtLine(lines[i], 'local');
       offset[i] = off;
       maxOffset = Math.max(maxOffset, off);
     }
   }
   for (let i = 0; i < cm.length; i++) {
-    if (lines[i] !== null) {
+    if (lines[i] != null) {
       let diff = maxOffset - offset[i];
       if (diff > 1) {
         aligners.push(padAbove(cm[i], lines[i], diff));
@@ -865,7 +867,7 @@ function padAbove(cm, line, size) {
 }
 
 function drawConnectorsForChunk(dv, chunk, sTopOrig, sTopEdit, w) {
-  let flip = dv.type === 'left';
+  let flip = dv.type == 'left';
   let top = dv.orig.heightAtLine(chunk.origFrom, 'local', true) - sTopOrig;
   if (dv.svg) {
     let topLpx = top;
@@ -945,7 +947,7 @@ function drawConnectorsForChunk(dv, chunk, sTopOrig, sTopEdit, w) {
       let copyReverse = dv.copyButtons.appendChild(
         elt(
           'div',
-          dv.type === 'right' ? '\u21dd' : '\u21dc',
+          dv.type == 'right' ? '\u21dd' : '\u21dc',
           'CodeMirror-merge-copy-reverse'
         )
       );
@@ -957,7 +959,7 @@ function drawConnectorsForChunk(dv, chunk, sTopOrig, sTopEdit, w) {
         origTo: chunk.editTo
       };
       copyReverse.style.top = topReverse + 'px';
-      dv.type === 'right'
+      dv.type == 'right'
         ? (copyReverse.style.left = '2px')
         : (copyReverse.style.right = '2px');
     }
@@ -1003,24 +1005,20 @@ class MergeView implements MergeView.IMergeViewEditor {
     node: HTMLElement,
     options?: MergeView.IMergeViewEditorConfiguration
   ) {
-    if (!(this instanceof MergeView)) {
-      return new MergeView(node, options);
-    }
-
     this.options = options;
-    let origLeft = options.origLeft;
-    let origRight =
-      options.origRight === null ? options.orig : options.origRight;
+    let origLeft = options.origLeft == null ? options.orig : options.origLeft;
+    let origRight = options.origRight;
 
-    let hasLeft = origLeft !== null;
-    let hasRight = origRight !== null;
+    let hasLeft = origLeft != null;
+    let hasRight = origRight != null;
+
     let panes = 1 + (hasLeft ? 1 : 0) + (hasRight ? 1 : 0);
-    let wrap = [];
-    let left = (this.left = null);
-    let right = (this.right = null);
+    let wrap: HTMLDivElement[] = [];
+    let left: DiffView | null = (this.left = null);
+    let right: DiffView | null = (this.right = null);
     let self = this;
 
-    let leftPane = null;
+    let leftPane: HTMLDivElement = null;
     if (hasLeft) {
       left = this.left = new DiffView(this, 'left');
       leftPane = elt(
@@ -1039,7 +1037,7 @@ class MergeView implements MergeView.IMergeViewEditor {
     );
     wrap.push(editPane);
 
-    let rightPane = null;
+    let rightPane: HTMLDivElement = null;
     if (hasRight) {
       right = this.right = new DiffView(this, 'right');
       wrap.push(buildGap(right));
@@ -1072,7 +1070,7 @@ class MergeView implements MergeView.IMergeViewEditor {
         collapseIdenticalStretches(self, options.collapseIdentical);
       });
     }
-    if (options.connect === 'align') {
+    if (options.connect == 'align') {
       this.aligners = [];
       alignChunks(this.left || this.right, true);
     }
@@ -1110,11 +1108,11 @@ class MergeView implements MergeView.IMergeViewEditor {
     return this.edit;
   }
 
-  rightOriginal() {
+  rightOriginal(): CodeMirror.Editor {
     return this.right && this.right.orig;
   }
 
-  leftOriginal() {
+  leftOriginal(): CodeMirror.Editor {
     return this.left && this.left.orig;
   }
 
@@ -1144,7 +1142,7 @@ class MergeView implements MergeView.IMergeViewEditor {
   options: MergeView.IMergeViewEditorConfiguration;
   left: DiffView | null;
   right: DiffView | null;
-  wrap;
+  wrap: HTMLDivElement;
   edit: CodeMirror.Editor;
   aligners: CodeMirror.LineWidget[];
 }
@@ -1167,7 +1165,7 @@ function buildGap(dv: DiffView) {
       if (!node.chunk) {
         return;
       }
-      if (node.className === 'CodeMirror-merge-copy-reverse') {
+      if (node.className == 'CodeMirror-merge-copy-reverse') {
         copyChunk(dv, dv.orig, dv.edit, node.chunk);
         return;
       }
@@ -1175,7 +1173,7 @@ function buildGap(dv: DiffView) {
     });
     gapElts.unshift(dv.copyButtons);
   }
-  if (dv.mv.options.connect !== 'align') {
+  if (dv.mv.options.connect != 'align') {
     let svg =
       document.createElementNS && document.createElementNS(svgNS, 'svg');
     if (svg && !svg.createSVGRect) {
@@ -1191,7 +1189,7 @@ function buildGap(dv: DiffView) {
 }
 
 function asString(obj) {
-  if (typeof obj === 'string') {
+  if (typeof obj == 'string') {
     return obj;
   } else {
     return obj.getValue();
@@ -1215,7 +1213,7 @@ function getDiff(
     let part = diff[i];
     if (ignoreWhitespace ? !/[^ \t]/.test(part[1]) : !part[1]) {
       diff.splice(i--, 1);
-    } else if (i && diff[i - 1][0] === part[0]) {
+    } else if (i && diff[i - 1][0] == part[0]) {
       diff.splice(i--, 1);
       diff[i][1] += part[1];
     }
@@ -1235,7 +1233,7 @@ function getChunks(diff: MergeView.Diff[]): MergeView.Chunk[] {
   for (let i = 0; i < diff.length; ++i) {
     let part = diff[i];
     let tp = part[0];
-    if (tp === DIFF_EQUAL) {
+    if (tp == DIFF_EQUAL) {
       let startOff =
         !startOfLineClean(diff, i) ||
         edit.line < startEdit ||
@@ -1261,7 +1259,7 @@ function getChunks(diff: MergeView.Diff[]): MergeView.Chunk[] {
         startOrig = cleanToOrig;
       }
     } else {
-      moveOver(tp === DIFF_INSERT ? edit : orig, part[1]);
+      moveOver(tp == DIFF_INSERT ? edit : orig, part[1]);
     }
   }
   if (startEdit <= edit.line || startOrig <= orig.line) {
@@ -1287,9 +1285,7 @@ function endOfLineClean(diff: MergeView.Diff[], i: number): boolean {
     return true;
   }
   next = diff[i + 2][1];
-  return (
-    (next.length > 1 || i === diff.length - 3) && next.charCodeAt(0) === 10
-  );
+  return (next.length > 1 || i == diff.length - 3) && next.charCodeAt(0) === 10;
 }
 
 function startOfLineClean(diff: MergeView.Diff[], i: number): boolean {
@@ -1297,14 +1293,14 @@ function startOfLineClean(diff: MergeView.Diff[], i: number): boolean {
     return true;
   }
   let last = diff[i - 1][1];
-  if (last.charCodeAt(last.length - 1) !== 10) {
+  if (last.charCodeAt(last.length - 1) != 10) {
     return false;
   }
-  if (i === 1) {
+  if (i == 1) {
     return true;
   }
   last = diff[i - 2][1];
-  return last.charCodeAt(last.length - 1) === 10;
+  return last.charCodeAt(last.length - 1) == 10;
 }
 
 function chunkBoundariesAround(
@@ -1320,7 +1316,7 @@ function chunkBoundariesAround(
     let chunk = chunks[i];
     let fromLocal = nInEdit ? chunk.editFrom : chunk.origFrom;
     let toLocal = nInEdit ? chunk.editTo : chunk.origTo;
-    if (afterE === null) {
+    if (afterE == null) {
       if (fromLocal > n) {
         afterE = chunk.editFrom;
         afterO = chunk.origFrom;
@@ -1407,7 +1403,7 @@ function unclearNearChunks(
 }
 
 function collapseIdenticalStretches(mv: MergeView, margin: number | boolean) {
-  if (typeof margin !== 'number') {
+  if (typeof margin != 'number') {
     margin = 2;
   }
   let clear: boolean[] = [];
@@ -1470,7 +1466,7 @@ function elt<K extends keyof HTMLElementTagNameMap>(
   if (style) {
     e.style.cssText = style;
   }
-  if (typeof content === 'string') {
+  if (typeof content == 'string') {
     e.appendChild(document.createTextNode(content));
   } else if (content) {
     for (let i = 0; i < content.length; ++i) {
@@ -1502,7 +1498,7 @@ function moveOver(
   let at = 0;
   for (;;) {
     let nl = str.indexOf('\n', at);
-    if (nl === -1) {
+    if (nl == -1) {
       break;
     }
     ++out.line;
@@ -1542,7 +1538,7 @@ class TrackAlignable {
         return;
       }
       let found = marker.find(1);
-      if (found !== null) {
+      if (found != null) {
         self.set(found.line, F_MARKER);
       }
     });
@@ -1608,8 +1604,8 @@ class TrackAlignable {
     let pos = -1;
     for (; pos < this.alignable.length; pos += 2) {
       let diff = this.alignable[pos] - n;
-      if (diff === 0) {
-        if ((this.alignable[pos + 1] & flags) === flags) {
+      if (diff == 0) {
+        if ((this.alignable[pos + 1] & flags) == flags) {
           return;
         }
         this.alignable[pos + 1] |= flags;
@@ -1627,7 +1623,7 @@ class TrackAlignable {
 
   find(n: number): number {
     for (let i = 0; i < this.alignable.length; i += 2) {
-      if (this.alignable[i] === n) {
+      if (this.alignable[i] == n) {
         return i;
       }
     }
@@ -1637,7 +1633,7 @@ class TrackAlignable {
   /* tslint:disable:no-bitwise */
   check(n: number, flag, pred) {
     let found = this.find(n);
-    if (found === -1 || !(this.alignable[found + 1] & flag)) {
+    if (found == -1 || !(this.alignable[found + 1] & flag)) {
       return;
     }
     if (!pred.call(this, n)) {
@@ -1683,7 +1679,7 @@ class TrackAlignable {
 
   hasWidgetBelow(n: number): boolean {
     // @ts-ignore
-    if (n === this.cm.lastLine()) {
+    if (n == this.cm.lastLine()) {
       return false;
     }
     // @ts-ignore
@@ -1706,10 +1702,10 @@ class TrackAlignable {
     let widgetTo = -1;
     for (let i = 0; i < this.alignable.length; i += 2) {
       let n = this.alignable[i];
-      if (n === from && this.alignable[i + 1] & F_WIDGET_BELOW) {
+      if (n == from && this.alignable[i + 1] & F_WIDGET_BELOW) {
         widgetFrom = i;
       }
-      if (n === to && this.alignable[i + 1] & F_WIDGET_BELOW) {
+      if (n == to && this.alignable[i + 1] & F_WIDGET_BELOW) {
         widgetTo = i;
       }
       if (n <= from) {
@@ -1722,7 +1718,7 @@ class TrackAlignable {
     }
     if (widgetFrom > -1) {
       let flags = this.alignable[widgetFrom + 1];
-      if (flags === F_WIDGET_BELOW) {
+      if (flags == F_WIDGET_BELOW) {
         this.alignable.splice(widgetFrom, 2);
       } else {
         this.alignable[widgetFrom + 1] = flags & ~F_WIDGET_BELOW;
@@ -1742,7 +1738,7 @@ function posMax(a: CodeMirror.Position, b: CodeMirror.Position) {
   return (a.line - b.line || a.ch - b.ch) > 0 ? a : b;
 }
 function posEq(a: CodeMirror.Position, b: CodeMirror.Position) {
-  return a.line === b.line && a.ch === b.ch;
+  return a.line == b.line && a.ch == b.ch;
 }
 
 function findPrevDiff(chunks, start: number, isOrig: boolean) {
@@ -1773,21 +1769,21 @@ function goNearbyDiff(cm: CodeMirror.Editor, dir: number) {
   if (views) {
     for (let i = 0; i < views.length; i++) {
       let dv = views[i];
-      let isOrig = cm === dv.orig;
+      let isOrig = cm == dv.orig;
       ensureDiff(dv);
       let pos =
         dir < 0
           ? findPrevDiff(dv.chunks, line, isOrig)
           : findNextDiff(dv.chunks, line, isOrig);
       if (
-        pos !== null &&
-        (found === null || (dir < 0 ? pos > found : pos < found))
+        pos != null &&
+        (found == null || (dir < 0 ? pos > found : pos < found))
       ) {
         found = pos;
       }
     }
   }
-  if (found !== null) {
+  if (found != null) {
     // @ts-ignore
     cm.setCursor(found, 0);
   } else {

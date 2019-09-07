@@ -2,8 +2,9 @@
 Module with all the individual handlers, which execute git commands and return the results to the frontend.
 """
 import json
+import os
 
-from notebook.utils import url_path_join as ujoin
+from notebook.utils import url_path_join as ujoin, url2path
 from notebook.base.handlers import APIHandler
 
 
@@ -449,11 +450,12 @@ class GitDiffContentHandler(GitHandler):
     """
 
     def post(self):
+        cm = self.contents_manager
         data = self.get_json_body()
         filename = data["filename"]
         prev_ref = data["prev_ref"]
         curr_ref = data["curr_ref"]
-        top_repo_path = data["top_repo_path"]
+        top_repo_path = os.path.join(cm.root_dir, url2path(data["top_repo_path"]))
         response = self.git.diff_content(filename, prev_ref, curr_ref, top_repo_path)
         self.finish(
             json.dumps(

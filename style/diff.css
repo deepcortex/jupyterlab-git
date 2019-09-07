@@ -1,4 +1,4 @@
-@import url('~codemirror/addon/merge/merge.css');
+@import url('./difftext.css');
 
 .jp-git-Notebook-diff .CodeMirror-gutter.CodeMirror-linenumbers[style] {
     width: 29px !important;
@@ -118,8 +118,8 @@
     background: var(--jp-cell-editor-background);
 }
 
-.jp-git-diff-root .CodeMirror.cm-s-jupyter {
-    background: transparent;
+.jp-git-diff-root .CodeMirror {
+    background: var(--jp-layout-color0);
 }
 
 .jp-git-diff-root .CodeMirror-merge, .CodeMirror-merge .CodeMirror {
@@ -221,7 +221,13 @@
 }
 
 .jp-git-diff-root .CodeMirror-merge-spacer {
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, .5) 5px, rgba(255, 255, 255, .5) 10px);
+    background-image: repeating-linear-gradient(
+        -45deg, 
+        transparent, 
+        transparent 1em, 
+        var(--jp-inverse-layout-color4) 1em, 
+        var(--jp-inverse-layout-color4) 1.3em
+    )
 }
 
 
