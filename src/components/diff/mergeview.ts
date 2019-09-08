@@ -2,6 +2,7 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
+// The code is not working with this is enforced.
 /* tslint:disable:triple-equals */
 
 import CodeMirror from 'codemirror';
@@ -36,6 +37,9 @@ export namespace MergeView {
      */
     connect?: string;
 
+    /**
+     * Should the whitespace be ignored when comparing text
+     */
     ignoreWhitespace?: boolean;
 
     /**
@@ -123,13 +127,6 @@ export namespace MergeView {
      */
     setShowDifferences(showDifferences: boolean): void;
   }
-
-  export type Chunk = {
-    origFrom: number;
-    origTo: number;
-    editFrom: number;
-    editTo: number;
-  };
 
   export type Diff = [number, string];
 }
@@ -442,7 +439,7 @@ class DiffView implements MergeView.IDiffView {
   gap: HTMLDivElement;
   lockScroll;
   diff;
-  chunks: MergeView.Chunk[];
+  chunks: MergeView.IMergeViewDiffChunk[];
   dealigned: boolean;
   diffOutOfDate: boolean;
   needsScrollSync: boolean;
@@ -1221,8 +1218,8 @@ function getDiff(
   return diff;
 }
 
-function getChunks(diff: MergeView.Diff[]): MergeView.Chunk[] {
-  let chunks: MergeView.Chunk[] = [];
+function getChunks(diff: MergeView.Diff[]): MergeView.IMergeViewDiffChunk[] {
+  let chunks: MergeView.IMergeViewDiffChunk[] = [];
   if (!diff.length) {
     return chunks;
   }
@@ -1304,7 +1301,7 @@ function startOfLineClean(diff: MergeView.Diff[], i: number): boolean {
 }
 
 function chunkBoundariesAround(
-  chunks: MergeView.Chunk[],
+  chunks: MergeView.IMergeViewDiffChunk[],
   n: number,
   nInEdit: boolean
 ) {

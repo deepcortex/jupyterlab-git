@@ -3,6 +3,7 @@
   "version": "0.8.2",
   "description": "A JupyterLab extension for version control using git",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "style": "style/index.css",
   "license": "BSD-3-Clause",
   "author": "Git Intern Team - Jenna Landy, Noah Stapp, Alena Mueller; AWS - Jaipreet Singh, Neelam Gehlot; Quansight - Saul Shanabrook",
@@ -22,8 +23,10 @@
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-    "style/*.css",
-    "style/images/*.svg"
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+  ],
+  "sideEffects": [
+    "style/*.css"
   ],
   "jupyterlab": {
     "extension": true,

@@ -1,33 +1,21 @@
-import { addCommands, CommandIDs } from './gitMenuCommands';
-
-import { PathExt } from '@jupyterlab/coreutils';
-
-import { GitWidget } from './components/GitWidget';
-
 import {
   ILayoutRestorer,
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-
+import { PathExt } from '@jupyterlab/coreutils';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-
 import { IMainMenu } from '@jupyterlab/mainmenu';
-
-import { Menu } from '@phosphor/widgets';
-
-import { Token } from '@phosphor/coreutils';
-
-import { gitTabStyle } from './componentsStyle/GitWidgetStyle';
-
-import { IDiffCallback } from './git';
-export { IDiffCallback } from './git';
-
-import '../style/variables.css';
-import '../style/diff.css';
-import '../style/diff.css';
-import { GitClone } from './widgets/gitClone';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { Token } from '@phosphor/coreutils';
+import { Menu } from '@phosphor/widgets';
+import { GitWidget } from './components/GitWidget';
+import { gitTabStyle } from './componentsStyle/GitWidgetStyle';
+import { IDiffCallback } from './git';
+import { addCommands, CommandIDs } from './gitMenuCommands';
+import { GitClone } from './widgets/gitClone';
+
+export { IDiffCallback } from './git';
 
 export const EXTENSION_ID = 'jupyter.extensions.git_plugin';
 
