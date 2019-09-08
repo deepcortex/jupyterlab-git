@@ -38,3 +38,19 @@
 .jp-git-PlainText-diff .CodeMirror-merge-l-chunk {
   background-color: rgba(155, 185, 85, 0.2);
 }
+
+.CodeMirror-patchgutter {
+  width: 0.7em;
+}
+
+.CodeMirror-patchgutter-insert::before {
+  content: '+';
+  color: #999;
+  background-color: rgba(155, 185, 85, 0.2);
+}
+
+.CodeMirror-patchgutter-delete::before {
+  content: '-';
+  color: #999;
+  background-color: rgba(255, 0, 0, 0.2);
+}
