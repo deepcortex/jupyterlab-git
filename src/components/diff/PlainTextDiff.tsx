@@ -125,7 +125,6 @@ export class PlainTextDiff extends React.Component<
     const mode = Mode.findByFileName(this.props.path);
 
     mergeView(
-      // CodeMirror.MergeView(
       document.getElementById(
         `diffviewer-${this.props.path}-${getRefValue(
           this.props.diffContext.currentRef
@@ -136,6 +135,7 @@ export class PlainTextDiff extends React.Component<
         orig: prevContent,
         lineNumbers: true,
         mode: mode.mime,
+        theme: 'jupyter',
         connect: 'align',
         collapseIdentical: true,
         revertButtons: false

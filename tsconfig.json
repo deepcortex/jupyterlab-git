@@ -14,5 +14,5 @@
     "plugins": [{ "name": "typescript-tslint-plugin" }],
     "resolveJsonModule": true
   },
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
