@@ -17,9 +17,9 @@ class Git:
     A single parent class containing all of the individual git methods in it.
     """
 
-    def __init__(self, root_dir, *args, **kwargs):
-        super(Git, self).__init__(*args, **kwargs)
-        self.root_dir = os.path.realpath(os.path.expanduser(root_dir))
+    def __init__(self, contents_manager):
+        self.contents_manager = contents_manager
+        self.root_dir = os.path.realpath(os.path.expanduser(contents_manager.root_dir))
 
     def config(self, top_repo_path, **kwargs):
         """Get or set Git options.
@@ -732,7 +732,7 @@ class Git:
         """
         Execute git show<ref:filename> command & return the result.
         """
-        command = ["git", "show", f'{ref}:{filename}']
+        command = ["git", "show", '{}:{}'.format(ref, filename)]
         p = subprocess.Popen(
             command,
             stdout=PIPE,
@@ -752,13 +752,13 @@ class Git:
                 ' '.join(command)
             ))
 
-    def less(self, filename, top_repo_path):
+    def get_content(self, filename, top_repo_path):
         """
-        Execute less -FX <filename> command & return the result.
+        Get the file content of filename.
         """
-        my_output = subprocess.check_output(
-            ["less", "-FX", filename], cwd=top_repo_path)
-        return my_output.decode('utf-8')
+        relative_repo = os.path.relpath(top_repo_path, self.root_dir)
+        model = self.contents_manager.get(path=os.path.join(relative_repo, filename))
+        return model.content
 
     def diff_content(self, filename, prev_ref, curr_ref, top_repo_path):
         """
@@ -768,7 +768,7 @@ class Git:
             prev_content = self.show(filename, prev_ref["git"], top_repo_path)
             if "special" in curr_ref:
                 if curr_ref["special"] == "WORKING":
-                    curr_content = self.less(filename, top_repo_path)
+                    curr_content = self.get_content(filename, top_repo_path)
                 elif curr_ref["special"] == "INDEX":
                     curr_content = self.show(filename, "", top_repo_path)
                 else:

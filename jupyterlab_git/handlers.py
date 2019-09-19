@@ -457,11 +457,7 @@ class GitDiffContentHandler(GitHandler):
         curr_ref = data["curr_ref"]
         top_repo_path = os.path.join(cm.root_dir, url2path(data["top_repo_path"]))
         response = self.git.diff_content(filename, prev_ref, curr_ref, top_repo_path)
-        self.finish(
-            json.dumps(
-                response
-            )
-        )
+        self.finish(json.dumps(response))
 
 
 class GitServerRootHandler(GitHandler):
