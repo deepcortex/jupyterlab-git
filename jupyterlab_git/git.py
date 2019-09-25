@@ -760,14 +760,14 @@ class Git:
         """
         relative_repo = os.path.relpath(top_repo_path, self.root_dir)
         model = self.contents_manager.get(path=os.path.join(relative_repo, filename))
-        return model.content
+        return model['content']
 
     def diff_content(self, filename, prev_ref, curr_ref, top_repo_path):
         """
         Collect get content of prev and curr and return.
         """
         try:
-            prev_content = self.show(filename, prev_ref["git"], top_repo_path)
+            prev_content = self.show(filename, prev_ref["git"], top_repo_path) if prev_ref["git"] else ""
             if "special" in curr_ref:
                 if curr_ref["special"] == "WORKING":
                     curr_content = self.get_content(filename, top_repo_path)

@@ -7,6 +7,7 @@ import { IDiffProps } from './Diff';
 import { getRefValue, IDiffContext } from './model';
 
 import { mergeView } from './mergeview';
+import { NBDiffHeader } from './NBDiffHeader';
 
 interface ICurrentReference {
   special?: 'WORKING' | 'INDEX';
@@ -51,6 +52,9 @@ export class PlainTextDiff extends React.Component<
       return (
         <div className="jp-git-diff-Widget">
           <div className="jp-git-diff-root">
+            <div className="jp-git-Notebook-diff">
+              <NBDiffHeader {...this.props} />
+            </div>
             <div
               id={`diffviewer-${this.props.path}-${getRefValue(
                 this.props.diffContext.currentRef
