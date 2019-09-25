@@ -177,7 +177,7 @@ class Git:
         Execute git log command & return the result.
         """
         p = Popen(
-            ["git", "log", "--pretty=format:%H%n%an%n%ar%n%s", "-10"],
+            ["git", "log", "--pretty=format:%H%n%an%n%ar%n%s"],
             stdout=PIPE,
             stderr=PIPE,
             cwd=os.path.join(self.root_dir, current_path),
